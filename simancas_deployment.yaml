@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simancas-deployment
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      role: simancas
+      version: "1.1"
+  template:
+    metadata:
+      labels:
+        version: "1.1"
+        role: simancas
+    spec:
+      containers:
+        - image: transactcharlie/pushgateway:latest
+          name: pod-simancas
+          ports:
+            - containerPort: 8080
+              protocol: TCP

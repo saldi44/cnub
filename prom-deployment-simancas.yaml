@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prom-simancas-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: prom-simancas
+      version: "1.1"
+  template:
+    metadata:
+      labels:
+        version: "1.1"
+        role: prom-simancas
+    spec:
+      containers:
+        - image: prom/prometheus:latest
+          args: ["--config.file=/data/simancas/prom-simancas.yml"]
+          name: prom-simancas
+          ports:
+            - containerPort: 20000
+              protocol: TCP
+          volumeMounts:
+          - name: prometheus-conf
+            mountPath: "/data/simancas"
+      volumes:
+      - name: prometheus-conf
+        hostPath:
+          path: /data/simancas/
+          type: DirectoryOrCreate

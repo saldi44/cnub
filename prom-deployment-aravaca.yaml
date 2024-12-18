@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prom-aravaca-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: prom-aravaca
+      version: "1.1"
+  template:
+    metadata:
+      labels:
+        version: "1.1"
+        role: prom-aravaca
+    spec:
+      containers:
+        - image: prom/prometheus:latest
+          args: ["--config.file=/data/aravaca/prom-aravaca.yml"]
+          name: prom-aravaca
+          ports:
+            - containerPort: 9090
+              protocol: TCP
+          volumeMounts:
+          - name: prometheus-conf
+            mountPath: "/data/aravaca"
+      volumes:
+      - name: prometheus-conf
+        hostPath:
+          path: /data/aravaca/
+          type: DirectoryOrCreate

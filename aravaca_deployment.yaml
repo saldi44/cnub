@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aravaca-deployment
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      role: aravaca
+      version: "1.1"
+  template:
+    metadata:
+      labels:
+        version: "1.1"
+        role: aravaca
+    spec:
+      containers:
+        - image: transactcharlie/pushgateway:latest
+          name: pod-aravaca
+          ports:
+            - containerPort: 8080
+              protocol: TCP

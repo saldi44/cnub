@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: aravaca-ingress
+  namespace: aravaca-p5
+spec:
+  rules:
+  - host: aravaca.monitor.es
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: np-server-prom-aravaca
+            port:
+              number: 20000
